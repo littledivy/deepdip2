@@ -89,6 +89,17 @@ const req = await fetch(`${deepdip2}/bounty`);
 const priceStats = await req.json();
 ```
 
+```js
+// Feel free to add more!
+const streamers = {
+ "BrenTM": "bren_tm2",
+ "WirtualTM": "wirtual",
+ "Scrapie98": "scrapie",
+ "LarsTM": "lars_tm",
+ "Spammiej": "spammiej",
+ "simo_900": "simo_900"
+}
+```
 <div class="grid grid-cols-4">
   <div class="card">
     <h2>WR height</h2>
@@ -106,7 +117,7 @@ const priceStats = await req.json();
   <div class="card">
     <h2>Top player</h2>
     <span class="big">
-        ${wr.name}
+        ${streamers[wr.name] ? html`<a href=https://twitch.tv/${streamers[wr.name]}>${wr.name}</a>` : wr.name}
     </span>
     <span style="color: red">
         ${
@@ -117,7 +128,7 @@ const priceStats = await req.json();
   <div class="card">
     <h2>2nd place</h2>
     <span class="big">
-        ${rank(2).name}
+        ${streamers[rank(2).name] ? html`<a href=https://twitch.tv/${streamers[rank(2).name]}>${rank(2).name}</a>` : rank(2).name}
     </span>
     <span style="color: red">
         ${
@@ -128,7 +139,7 @@ const priceStats = await req.json();
     <div class="card">
     <h2>3rd place</h2>
     <span class="big">
-        ${rank(3).name}
+        ${streamers[rank(3).name] ? html`<a href=https://twitch.tv/${streamers[rank(3).name]}>${rank(2).name}</a>` : rank(3).name}
     </span>
     <span style="color: red">
         ${
