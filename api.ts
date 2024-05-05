@@ -44,6 +44,24 @@ Deno.serve(async function (req) {
       });
       break;
     }
+    case "/world_records": {
+      const records = [];
+      const iter = await kv.list({ prefix: ["leaderboard"] });
+      for await (const { value: record, key } of iter) {
+        records.push({
+          height: record.find((r) => r.rank === 1).height,
+          timestamp: key[1],
+        });
+      }
+
+      return new Response(JSON.stringify(records), {
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      break;
+    }
     case "/stats": {
       const iter = await kv.list({ prefix: ["stats"] }, { reverse: true });
       const { value: stats } = await iter.next();
