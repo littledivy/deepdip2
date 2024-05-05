@@ -184,4 +184,6 @@ Inputs.table(globalLeaderboards, {
 
 </div>
 
+---
 
+View source on Github: https://github.com/littledivy/deepdip2
