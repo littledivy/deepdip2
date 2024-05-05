@@ -46,7 +46,7 @@ footer: false
 </style>
 
 <div class="hero">
-    <img src="https://deepdip2.vercel.app/dd2.svg" style="height: 200px" />
+    <img src="./dd2.svg" style="height: 200px" />
 </div>
 
 ```js
