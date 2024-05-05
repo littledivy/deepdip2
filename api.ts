@@ -61,6 +61,16 @@ Deno.serve(async function (req) {
       return new Response("Ok");
       break;
     }
+    case "/bounty": {
+      const req = await fetch("https://api.matcherino.com/__api/bounties/totalSpent?bountyId=111501");
+      return new Response(req.body, {
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+      break;
+    }
     default:
       return serveDir(req, { fsRoot: "./dist" });
   }

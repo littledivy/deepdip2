@@ -46,7 +46,7 @@ footer: false
 </style>
 
 <div class="hero">
-    <h1>Deep Dip 2</h1>
+    <img src="https://deepdip2.vercel.app/dd2.svg" style="height: 200px" />
 </div>
 
 ```js
@@ -82,6 +82,11 @@ function sparkbar(max) {
     display: flex;
     justify-content: end;">${x.toLocaleString("en-US")}`
 }
+```
+
+```js
+const req = await fetch(`${deepdip2}/bounty`);
+const priceStats = await req.json();
 ```
 
 <div class="grid grid-cols-4">
@@ -151,6 +156,12 @@ function sparkbar(max) {
         ${globalStats.players}
     </span>
   </div>
+  <div class="card">
+    <h2>Prize pool</h2>
+    <span class="big">
+        $${priceStats.body.amount}
+    </span>
+  </div>
 </div>
 
 <div style="padding-top: 2em;">
@@ -172,3 +183,5 @@ Inputs.table(globalLeaderboards, {
 ```
 
 </div>
+
+
