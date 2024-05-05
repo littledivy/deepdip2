@@ -48,10 +48,17 @@ Deno.serve(async function (req) {
       const records = [];
       const iter = await kv.list({ prefix: ["leaderboard"] });
       for await (const { value: record, key } of iter) {
-        records.push({
-          height: record.find((r) => r.rank === 1).height,
-          timestamp: key[1],
-        });
+        for (const r of record) {
+          if (r.rank > 3) {
+            break;
+          }
+
+          records.push({
+            height: r.height,
+            timestamp: key[1],
+            rank: r.rank,
+          });
+        }
       }
 
       return new Response(JSON.stringify(records), {

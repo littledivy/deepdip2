@@ -50,7 +50,7 @@ footer: false
 </div>
 
 ```js
-const deepdip2 ="https://deepdip2.deno.dev"
+const deepdip2 = "https://deepdip2.deno.dev"
 const req = await fetch(`${deepdip2}/leaderboard`);
 const { latest: globalLeaderboards, prev } = await req.json();
 
@@ -91,7 +91,7 @@ const priceStats = await req.json();
 
 <div class="grid grid-cols-4">
   <div class="card">
-    <h2>WR</h2>
+    <h2>WR height</h2>
     <div class="flex">
     <span class="big">
         ${Math.floor(wr.height)}
@@ -179,6 +179,35 @@ Inputs.table(globalLeaderboards, {
   },
   rows: 100,
   maxHeight: "100%"
+})
+```
+
+</div>
+
+<div style="padding-top: 2em;">
+
+<h2>Records over time</h2>
+<p>May lack data before 5 May 2024</p>
+
+```js
+const req = await fetch(`${deepdip2}/world_records`);
+const records = await req.json();
+```
+
+```js
+Plot.dot(records
+.reverse()
+.map(r => {
+    r.timestamp = new Date(r.timestamp)
+    r.title = `Rank ${r.rank}`
+    return r;
+}), {y: "height", x: "timestamp", z:"rank", fill: "rank", tip: true}).plot({
+    grid: true,
+  color: {
+    scheme: "Observable10"
+  },
+  width: 1000,
+  height: 500
 })
 ```
 
