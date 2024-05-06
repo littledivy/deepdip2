@@ -45,8 +45,8 @@ Deno.serve(async function (req) {
         const { value: leaderboard_ } = await iter.next();
         const { value: prev_ } = await iter.next();
 
-        leaderboard = leaderboard_;
-        prev = prev_;
+        leaderboard = leaderboard_.value;
+        prev = prev_.value;
         if (leaderboard === null) {
           return new Response("Not Found", { status: 404 });
         }
@@ -55,7 +55,7 @@ Deno.serve(async function (req) {
       }
 
       return new Response(
-        JSON.stringify({ prev: prev?.value, latest: leaderboard.value }),
+        JSON.stringify({ prev, latest: leaderboard }),
         {
           headers: {
             "content-type": "application/json",
@@ -95,13 +95,13 @@ Deno.serve(async function (req) {
       try {
         const iter = await kv.list({ prefix: ["stats"] }, { reverse: true });
         const { value } = await iter.next();
-        stats = value;
+        stats = value.value;
       } catch (e) {
         console.error("Failed to get stats", e);
         stats = await overview();
       }
 
-      return new Response(JSON.stringify(stats.value), {
+      return new Response(JSON.stringify(stats), {
         headers: {
           "content-type": "application/json",
           "Access-Control-Allow-Origin": "*",

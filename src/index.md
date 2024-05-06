@@ -56,7 +56,7 @@ footer: false
 ```js
 const deepdip2 = "https://deepdip2.deno.dev"
 const req = await fetch(`${deepdip2}/leaderboard`);
-const { latest: globalLeaderboards, prev } = await req.json();
+const { latest: globalLeaderboards, prev = [] } = await req.json();
 
 const rank = (r) => {
    return globalLeaderboards.find(e => e.rank == r) || globalLeaderboards[r]
