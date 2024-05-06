@@ -126,7 +126,7 @@ const streamers = {
  "BrenTM": "bren_tm2",
  "WirtualTM": "wirtual",
  "Scrapie98": "scrapie",
- "LarsTM": "lars_tm",
+ "Larstm": "lars_tm",
  "Spammiej": "spammiej",
  "simo_900": "simo_900"
 }
@@ -171,7 +171,7 @@ const streamers = {
     <div class="card">
     <h2>3rd place</h2>
     <span class="big">
-        ${streamers[rank(3).name] ? html`<a href=https://twitch.tv/${streamers[rank(3).name]}>${rank(2).name}</a>` : rank(3).name}
+        ${streamers[rank(3).name] ? html`<a href=https://twitch.tv/${streamers[rank(3).name]}>${rank(3).name}</a>` : rank(3).name}
     </span>
     <span style="color: red">
         ${
