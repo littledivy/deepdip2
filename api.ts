@@ -1,7 +1,9 @@
 import { serveDir } from "jsr:@std/http/file-server";
 
 const kvAccessToken = Deno.env.get("KV_ACCESS_TOKEN");
-const kv = await Deno.openKv(kvAccessToken);
+Deno.env.set("DENO_KV_ACCESS_TOKEN", kvAccessToken);
+
+const kv = await Deno.openKv("https://deepdip2.fly.dev");
 
 async function globalLeaderboard() {
   const r = await fetch("https://dips-plus-plus.xk.io/leaderboard/global");
