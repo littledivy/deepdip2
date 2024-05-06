@@ -265,6 +265,7 @@ Plot.dot(records
 </div>
 
 <h2>Clips</h2>
+<p>Posted on <code>#twitch-clips</code> on the public discord server</p>
 
 ```js
 const clipsData = FileAttachment("./clips.json").json();
