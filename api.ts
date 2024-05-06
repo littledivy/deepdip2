@@ -2,17 +2,27 @@ import { serveDir } from "jsr:@std/http/file-server";
 
 const kv = await Deno.openKv();
 
+async function globalLeaderboard() {
+  const r = await fetch("https://dips-plus-plus.xk.io/leaderboard/global");
+  const leaderboard = await r.json();
+  return leaderboard;
+}
+
+async function overview() {
+  const r = await fetch("https://dips-plus-plus.xk.io/overview");
+  const overview = await r.json();
+  return overview;
+}
+
 async function syncLeaderboard() {
   try {
-    const r = await fetch("https://dips-plus-plus.xk.io/leaderboard/global");
-    const leaderboard = await r.json();
+    const leaderboard = await globalLeaderboard();
 
     const timestamp = Date.now();
     console.log("Updating leaderboard at", timestamp);
     await kv.set(["leaderboard", timestamp], leaderboard);
 
-    const r2 = await fetch("https://dips-plus-plus.xk.io/overview");
-    const stats = await r2.json();
+    const stats = await overview();
     await kv.set(["stats", timestamp], stats);
   } catch (e) {
     console.error("Failed to sync leaderboard", e);
@@ -27,21 +37,32 @@ Deno.serve(async function (req) {
   const url = new URL(req.url);
   switch (url.pathname) {
     case "/leaderboard": {
-      const iter = await kv.list({ prefix: ["leaderboard"] }, {
-        reverse: true,
-      });
-      const { value: leaderboard } = await iter.next();
-      const { value: prev } = await iter.next();
-      if (leaderboard === null) {
-        return new Response("Not Found", { status: 404 });
+      let leaderboard, prev;
+      try {
+        const iter = await kv.list({ prefix: ["leaderboard"] }, {
+          reverse: true,
+        });
+        const { value: leaderboard_ } = await iter.next();
+        const { value: prev_ } = await iter.next();
+
+        leaderboard = leaderboard_;
+        prev = prev_;
+        if (leaderboard === null) {
+          return new Response("Not Found", { status: 404 });
+        }
+      } catch (e) {
+        leaderboard = await globalLeaderboard();
       }
 
-      return new Response(JSON.stringify({ prev: prev?.value, latest: leaderboard.value }), {
-        headers: {
-          "content-type": "application/json",
-          "Access-Control-Allow-Origin": "*",
+      return new Response(
+        JSON.stringify({ prev: prev?.value, latest: leaderboard.value }),
+        {
+          headers: {
+            "content-type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
         },
-      });
+      );
       break;
     }
     case "/world_records": {
@@ -70,8 +91,15 @@ Deno.serve(async function (req) {
       break;
     }
     case "/stats": {
-      const iter = await kv.list({ prefix: ["stats"] }, { reverse: true });
-      const { value: stats } = await iter.next();
+      let stats;
+      try {
+        const iter = await kv.list({ prefix: ["stats"] }, { reverse: true });
+        const { value } = await iter.next();
+        stats = value;
+      } catch (e) {
+        console.error("Failed to get stats", e);
+        stats = await overview();
+      }
 
       return new Response(JSON.stringify(stats.value), {
         headers: {
@@ -87,7 +115,9 @@ Deno.serve(async function (req) {
       break;
     }
     case "/bounty": {
-      const req = await fetch("https://api.matcherino.com/__api/bounties/totalSpent?bountyId=111501");
+      const req = await fetch(
+        "https://api.matcherino.com/__api/bounties/totalSpent?bountyId=111501",
+      );
       return new Response(req.body, {
         headers: {
           "content-type": "application/json",
