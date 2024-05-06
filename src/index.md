@@ -260,6 +260,22 @@ Plot.dot(records
 
 </div>
 
+<h2>Clips</h2>
+
+```js
+const clipsData = FileAttachment("./clips.json").json();
+```
+
+```js
+const clips = Inputs.search(clipsData, { placeholder: 'Search for clips', filter: (s) => (q) => q.embeds[0]?.title.toLowerCase().includes(s.toLowerCase()) });
+display(clips)
+
+const clipsGen = Generators.input(clips)
+```
+
+```js
+Inputs.bind(html`<div class="grid grid-cols-3">${clipsGen.map(s => s.embeds[0] && html`<div class="card"><a href=${s.content}><p>${s.embeds[0]?.title}</p><img style=${`max-width: ${width / 4}px`} src=${s.embeds[0]?.thumbnail?.url} /></a></div>`)}</div>`, clips)
+```
 ---
 
 View source on Github: https://github.com/littledivy/deepdip2
