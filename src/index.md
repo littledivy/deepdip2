@@ -27,6 +27,10 @@ footer: false
   background-clip: text;
 }
 
+.hero img {
+  max-width: calc(100vw - 108px);
+}
+
 .hero h2 {
   margin: 0;
   max-width: 34em;
