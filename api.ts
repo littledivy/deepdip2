@@ -29,7 +29,7 @@ async function syncLeaderboard() {
   }
 }
 
-Deno.cron("Sync leaderboard", "*/10 * * * *", syncLeaderboard);
+Deno.cron("Sync leaderboard", "*/30 * * * *", syncLeaderboard);
 
 syncLeaderboard();
 
