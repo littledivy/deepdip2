@@ -64,6 +64,37 @@ const rankPrev = (r) => {
 
 const wr = rank(1);
 const oldWr = rankPrev(1);
+
+const floorHeights = {
+    0: 4.0,
+    1: 104.0, // 01
+    2: 208.0, // 02
+    3: 312.0, // 03
+    4: 416.0, // 04
+    5: 520.0, // 05
+    6: 624.0, // 06
+    7: 728.0, // 07
+    8: 832.0, // 08
+    9: 936.0, // 09
+    10: 1040.0, // 10
+    11: 1144.0, // 11
+    12: 1264.0, // 12
+    13: 1376.0, // 13
+    14: 1480.0, // 14
+    15: 1584.0, // 15
+    16: 1688.0, // 16
+    17: 1910.0  // 17 fin
+};
+  
+  
+const heightToFloor = (height) => {
+    for (let floor = Object.keys(floorHeights).length - 1; floor >= 0; floor--) {
+        if (height >= floorHeights[floor]) {
+        return floor;
+        }
+    }
+    return -1;
+}
 ```
 
 ```js
@@ -100,6 +131,7 @@ const streamers = {
  "simo_900": "simo_900"
 }
 ```
+
 <div class="grid grid-cols-4">
   <div class="card">
     <h2>WR height</h2>
@@ -148,19 +180,19 @@ const streamers = {
     </span>
 
   </div> 
-
+  <div class="card">
+    <h2>WR floor</h2>
+    <span class="big">
+        ${heightToFloor(wr.height)}
+    </span>
+  </div>
   <div class="card">
     <h2>Total falls</h2>
     <span class="big">
         ${globalStats.falls}
     </span>
   </div> 
-  <div class="card">
-    <h2>Total floors fallen</h2>
-    <span class="big">
-        ${globalStats.floors_fallen}
-    </span>
-  </div>
+
   <div class="card">
     <h2>Total players</h2>
     <span class="big">
@@ -180,9 +212,13 @@ const streamers = {
 <h2>Live leaderboard</h2>
 
 ```js
-Inputs.table(globalLeaderboards, {
+Inputs.table(globalLeaderboards.map(s => {
+    s.floor = heightToFloor(s.height)
+    return s;
+}), {
   columns: [
     "name",
+    "floor",
     "height",
   ],
   format: {
