@@ -1,6 +1,7 @@
 import { serveDir } from "jsr:@std/http/file-server";
 
-const kv = await Deno.openKv();
+const kvAccessToken = Deno.env.get("KV_ACCESS_TOKEN");
+const kv = await Deno.openKv(kvAccessToken);
 
 async function globalLeaderboard() {
   const r = await fetch("https://dips-plus-plus.xk.io/leaderboard/global");
