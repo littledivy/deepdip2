@@ -1,5 +1,5 @@
 export default {
-  title: "dips",
+  title: "Deep Dip 2 community page",
   head: '<link rel="icon" href="observable.png" type="image/png" sizes="32x32">',
 
   root: "src",
