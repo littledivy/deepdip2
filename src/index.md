@@ -132,7 +132,8 @@ const streamers = {
  "Scrapie98": "scrapie",
  "Larstm": "lars_tm",
  "Spammiej": "spammiej",
- "simo_900": "simo_900"
+ "simo_900": "simo_900",
+ "eLconn21": "elconn21"
 }
 ```
 
