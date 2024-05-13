@@ -150,7 +150,7 @@ Deno.serve(async function (req) {
         },
       });
     }
-    case "live": {
+    case "/live": {
       const heights = await liveHeights();
       return new Response(JSON.stringify(heights), {
         headers: {
