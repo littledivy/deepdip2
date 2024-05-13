@@ -135,19 +135,7 @@ Deno.serve(async function (req) {
       });
       break;
     }
-    // Redirect /player/:name to /player/?q=:name
-    default: {
-      if (url.pathname.startsWith("/player/")) {
-        const name = url.pathname.split("/")[2];
-        return new Response(null, {
-          status: 302,
-          headers: {
-            location: `/player/?q=${name}`,
-          },
-        });
-      }
-
+    default:
       return serveDir(req, { fsRoot: "./dist" });
-    }
   }
 }, { port: 8000 });
