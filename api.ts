@@ -15,6 +15,14 @@ async function globalLeaderboard() {
   return leaderboard;
 }
 
+async function liveHeights() {
+  const r = await fetch("https://dips-plus-plus.xk.io/live_heights/global", {
+    headers,
+  });
+  const heights = await r.json();
+  return heights;
+}
+
 async function overview() {
   const r = await fetch("https://dips-plus-plus.xk.io/overview", {
     headers,
@@ -139,6 +147,15 @@ Deno.serve(async function (req) {
       return new Response(Deno.readFileSync("./dist/player.html"), {
         headers: {
           "content-type": "text/html",
+        },
+      });
+    }
+    case "live": {
+      const heights = await liveHeights();
+      return new Response(JSON.stringify(heights), {
+        headers: {
+          "content-type": "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
       });
     }
