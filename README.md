@@ -16,7 +16,39 @@ This project mainly consists of 3 services:
 
 ## Dataset
 
-It should be pretty easy to consume the data if you know your way around GCP and`gsutil`. Feel free to contact me on Discord `@littledivy` 
+### Raw heights data
+
+```
+gcloud storage rsync gs://deepdip2_data ./deepdip2_data/ -R
+```
+
+```
+├── [ 288]  deepdip2_data
+│   ├── [ 57K]  2024-05-07
+│   │   ├── [ 17K]  1715089294795.json
+│   │   ├── [ 17K]  1715089314402.json
+│   │   ├── ...
+│   ├── [ 57K]  2024-05-08
+│   │   ├── ...
+│   ├──  ...
+```
+
+### Heights data by player name
+
+```
+gcloud storage rsync gs://deepdip2_player_data ./deepdip2_player_data -R
+```
+
+```
+├── [213K]  deepdip2_generated_reports
+│   ├── [ 23K]  A--Raczej.json
+│   ├── [ 25K]  A-SoronSR.json
+│   ├── [ 38K]  A3D3X.json
+│   ├── [5.0K]  A4T.Seraph.json
+│   ├── ...
+```
+
+Feel free to contact me on Discord `@littledivy` 
 if you want to use the dataset for your own visualizations / videos.
 
 ## Third party APIs
