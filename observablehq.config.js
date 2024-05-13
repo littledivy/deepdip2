@@ -13,7 +13,7 @@ export default {
 
   <meta property="twitter:title" content="Deep Dip 2 community leaderboard">
   <meta property="twitter:description" content="Trackmania's Deep Dip 2 community leaderboard">
-  <meta property="twitter:image" content="https://avatars.githubusercontent.com/u/44036562?v=4">
+  <meta property="twitter:image" content="https://paste.divy.work/qP5SzK.png">
 
   <link rel="icon" href="https://paste.divy.work/qP5SzK.png">
   `,
