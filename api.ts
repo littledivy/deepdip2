@@ -135,6 +135,13 @@ Deno.serve(async function (req) {
       });
       break;
     }
+    case "/player": {
+      return new Response(Deno.readFileSync("./dist/player.html"), {
+        headers: {
+          "content-type": "text/html",
+        },
+      });
+    }
     default:
       return serveDir(req, { fsRoot: "./dist" });
   }
