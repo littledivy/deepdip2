@@ -2,14 +2,23 @@ import { serveDir } from "jsr:@std/http/file-server";
 
 const kv = await Deno.openKv();
 
+const headers = {
+  "User-Agent":
+    "deepdip2.live proxy and caching (contact: @littledivy on Discord)",
+};
+
 async function globalLeaderboard() {
-  const r = await fetch("https://dips-plus-plus.xk.io/leaderboard/global");
+  const r = await fetch("https://dips-plus-plus.xk.io/leaderboard/global", {
+    headers,
+  });
   const leaderboard = await r.json();
   return leaderboard;
 }
 
 async function overview() {
-  const r = await fetch("https://dips-plus-plus.xk.io/overview");
+  const r = await fetch("https://dips-plus-plus.xk.io/overview", {
+    headers,
+  });
   const overview = await r.json();
   return overview;
 }
