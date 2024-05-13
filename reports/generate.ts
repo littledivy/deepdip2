@@ -1,6 +1,6 @@
 const DATA_DIR = "./deepdip2_data";
 
-// gsutil rsync gs://deepdip2_data ./deepdip2_data/
+// gcloud storage rsync gs://deepdip2_data ./deepdip2_data/ -R
 
 const walk = Deno.readDir(DATA_DIR);
 const players = {};
@@ -42,6 +42,7 @@ for (const [name, data] of Object.entries(players)) {
 }
 
 await Promise.all(promises);
+await Deno.writeTextFile("deepdip2_generated_reports/.players.json", JSON.stringify(Object.keys(players)));
 
-// gsutil -m rsync -R ./deepdip2_generated_reports gs://deepdip2_player_data
+// gcloud storage rsync ./deepdip2_generated_reports gs://deepdip2_player_data -R
 

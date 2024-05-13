@@ -54,9 +54,6 @@ const query = window.location.search;
 const params = new URLSearchParams(query);
 
 const name = params.get('q');
-if (!name) {
-  throw new Error('No name provided.');
-}
 ```
 
 ```js
@@ -75,15 +72,19 @@ const ytStreamers = {
 }
 ```
 
-<div class="hero">
-  <h1>${name}</h1>
-</div>
+```js
+if(name) display(html`<div class="hero"><h1>${name}</h1></div>`);
+```
 
 ```js
-const req = await fetch(`https://storage.googleapis.com/deepdip2_player_data/${name}.json`);
-const records = await req.json();
+const gcsBucket = 'https://storage.googleapis.com/deepdip2_player_data';
+let biggestFall = NaN;
+let records, dates;
+if (name) {
+const req = await fetch(`${gcsBucket}/${name}.json`);
+records = await req.json();
 
-const dates = Object.keys(records.data).sort((a, b) => Date.parse(a) - Date.parse(b));
+dates = Object.keys(records.data).sort((a, b) => Date.parse(a) - Date.parse(b));
 
 // Calculate biggest height fall.
 const falls = dates.map(s => {
@@ -92,7 +93,8 @@ const falls = dates.map(s => {
   const min = data.reduce((acc, s) => Math.min(acc, s.height), Infinity);
   return max - min;
 });
-const biggestFall = Math.max(...falls);
+biggestFall = Math.max(...falls);
+}
 ```
 
 ```js
@@ -122,7 +124,7 @@ const floorHeights = {
     17: 1910.0  // 17 fin
 };
   
-  
+
 const heightToFloor = (height) => {
     for (let floor = Object.keys(floorHeights).length - 1; floor >= 0; floor--) {
         if (height >= floorHeights[floor]) {
@@ -135,6 +137,9 @@ const heightToFloor = (height) => {
 const player = leaderboard.latest.find(s => s.name === name);
 ```
 
+```js
+if(name) {
+display(html`
 <div class="grid grid-cols-2">
  <div class="card">
     <h2>Rank</h2>
@@ -144,7 +149,6 @@ const player = leaderboard.latest.find(s => s.name === name);
     </span>
     </div>
   </div>
-
   <div class="card">
     <h2>PB</h2>
     <div class="flex">
@@ -169,7 +173,12 @@ const player = leaderboard.latest.find(s => s.name === name);
     </span>
     </div>
   </div>
-  ${twitchStreamers[name] && html`
+ </div>`)
+ }
+```
+
+```js
+if (twitchStreamers[name]) display(html`
  <div class="card">
     <span>
     <img height=20 src=https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Twitch_Glitch_Logo_Purple.svg/512px-Twitch_Glitch_Logo_Purple.svg.png />
@@ -178,8 +187,11 @@ const player = leaderboard.latest.find(s => s.name === name);
         ${twitchStreamers[name]}
     </a>
   </div>
-  `}
-    ${ytStreamers[name] ? html`
+  `)
+```
+
+```js
+if (ytStreamers[name]) display(html`
  <div class="card">
     <span>
     <img height=20 src=https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg />
@@ -188,17 +200,16 @@ const player = leaderboard.latest.find(s => s.name === name);
         ${ytStreamers[name]}
     </a>
   </div>
-    ` : ""}
- </div>
-
-<div style="padding-top: 2em;">
-
-<h2>Daily heights</h2>
+    `)
+```
 
 ```js
-html`${dates.map(s => {
-console.log(s)
-const data  = records.data[s].sort((a, b) => a.ts - b.ts);
+if(name) {
+display(html`
+<div style="padding-top: 2em;">
+<h2>Daily heights</h2>
+${dates.map(s => {
+const data = records.data[s].sort((a, b) => a.ts - b.ts);
 return html`<h3 style="margin-top:1em">${new Date(Date.parse(s)).toLocaleDateString()}</h3> ${Plot.plot({
   y: {grid: true},
   width: width,
@@ -208,13 +219,38 @@ return html`<h3 style="margin-top:1em">${new Date(Date.parse(s)).toLocaleDateStr
         return s;
     }),{x: "timestamp", y: (d, c) => {
     const prev = data[c - 1];
-    // If a long time has passed, more than 10 minutes, we don't want to draw a line
     return prev && d.ts - prev.ts < 1000 ? d.height : null;
     }, tip: true}),
   ]
 })}`
-})}`
+})}
+</div>
+`);
+}
 ```
 
-</div>
+```js
+let textGen, text;
+if (!name) {
+  const req = await fetch(`${gcsBucket}/.players.json`);
+
+  const players = await req.json();
+
+  text = Inputs.search(players, {
+      placeholder: "Search for a player",
+  });
+  display(text)
+
+
+  textGen = Generators.input(text);
+}
+```
+
+```js
+if (textGen) display(Inputs.bind(html`<div class="grid grid-cols-3">${
+    textGen?.map((s) =>
+      html`<div class="card"><a href=/player?q=${s}><p>${s}</p></a></div>`
+    )
+  }</div>`, text))
+```
 
