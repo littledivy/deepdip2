@@ -169,26 +169,26 @@ const player = leaderboard.latest.find(s => s.name === name);
     </span>
     </div>
   </div>
- <div class="card">
   ${twitchStreamers[name] && html`
+ <div class="card">
     <span>
     <img height=20 src=https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Twitch_Glitch_Logo_Purple.svg/512px-Twitch_Glitch_Logo_Purple.svg.png />
     </span>
     <a href=https://twitch.tv/${twitchStreamers[name]} class="big" style="margin-left:5px;">
         ${twitchStreamers[name]}
     </a>
-  `}
   </div>
+  `}
+    ${ytStreamers[name] ? html`
  <div class="card">
-    ${ytStreamers[name] && html`
     <span>
     <img height=20 src=https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg />
     </span>
     <a href=https://youtube.com/${ytStreamers[name]} class="big" style="margin-left:5px;">
         ${ytStreamers[name]}
     </a>
-    `}
   </div>
+    ` : ""}
  </div>
 
 <div style="padding-top: 2em;">
