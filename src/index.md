@@ -124,19 +124,6 @@ const req = await fetch(`${deepdip2}/bounty`);
 const priceStats = await req.json();
 ```
 
-```js
-// Feel free to add more!
-const streamers = {
- "BrenTM": "bren_tm2",
- "WirtualTM": "wirtual",
- "Scrapie98": "scrapie",
- "Larstm": "lars_tm",
- "Spammiej": "spammiej",
- "simo_900": "simo_900",
- "eLconn21": "elconn21"
-}
-```
-
 <div class="grid grid-cols-4">
   <div class="card">
     <h2>WR height</h2>

@@ -59,6 +59,22 @@ if (!name) {
 }
 ```
 
+```js
+// Feel free to add more!
+const twitchStreamers = {
+ "BrenTM": "bren_tm2",
+ "WirtualTM": "wirtual",
+ "Scrapie98": "scrapie",
+ "Larstm": "lars_tm",
+ "Spammiej": "spammiej",
+ "simo_900": "simo_900",
+ "eLconn21": "elconn21"
+}
+const ytStreamers = {
+  "WirtualTM": "WirtualTV"
+}
+```
+
 <div class="hero">
   <h1>${name}</h1>
 </div>
@@ -119,7 +135,7 @@ const heightToFloor = (height) => {
 const player = leaderboard.latest.find(s => s.name === name);
 ```
 
-<div class="grid grid-cols-4">
+<div class="grid grid-cols-2">
  <div class="card">
     <h2>Rank</h2>
     <div class="flex">
@@ -153,7 +169,27 @@ const player = leaderboard.latest.find(s => s.name === name);
     </span>
     </div>
   </div>
-</div>
+ <div class="card">
+  ${twitchStreamers[name] && html`
+    <span>
+    <img height=20 src=https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Twitch_Glitch_Logo_Purple.svg/512px-Twitch_Glitch_Logo_Purple.svg.png />
+    </span>
+    <a href=https://twitch.tv/${twitchStreamers[name]} class="big" style="margin-left:5px;">
+        ${twitchStreamers[name]}
+    </a>
+  `}
+  </div>
+ <div class="card">
+    ${ytStreamers[name] && html`
+    <span>
+    <img height=20 src=https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg />
+    </span>
+    <a href=https://youtube.com/${ytStreamers[name]} class="big" style="margin-left:5px;">
+        ${ytStreamers[name]}
+    </a>
+    `}
+  </div>
+ </div>
 
 <div style="padding-top: 2em;">
 
